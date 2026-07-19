@@ -1,0 +1,52 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate skill structure
+        run: |
+          set -e
+
+          if [ ! -f "SKILL.md" ]; then
+            echo "FAIL: SKILL.md not found"
+            exit 1
+          fi
+          echo "OK: SKILL.md exists"
+
+          name_line=$(grep -m1 '^name:' SKILL.md || true)
+          desc_line=$(grep -m1 '^description:' SKILL.md || true)
+
+          name_value=$(echo "$name_line" | sed 's/^name:[[:space:]]*//' | xargs)
+          desc_value=$(echo "$desc_line" | sed 's/^description:[[:space:]]*//' | xargs)
+
+          if [ -z "$name_value" ]; then
+            echo "FAIL: SKILL.md frontmatter is missing a non-empty name field"
+            exit 1
+          fi
+          echo "OK: name field present ($name_value)"
+
+          if [ -z "$desc_value" ]; then
+            echo "FAIL: SKILL.md frontmatter is missing a non-empty description field"
+            exit 1
+          fi
+          echo "OK: description field present"
+
+          repo_name="${GITHUB_REPOSITORY##*/}"
+          if [ "$name_value" != "$repo_name" ]; then
+            echo "FAIL: name field ($name_value) does not match repo name ($repo_name)"
+            exit 1
+          fi
+          echo "OK: name field matches repo name"
+
+          if ! grep -q "SKILL.md" README.md; then
+            echo "FAIL: README.md does not link to SKILL.md"
+            exit 1
+          fi
+          echo "OK: README.md links to SKILL.md"
