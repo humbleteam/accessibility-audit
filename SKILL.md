@@ -117,6 +117,7 @@ Omit a severity section entirely when it has zero findings - do not pad it with 
 ## Edge cases
 
 - **Multiple screens or states in one screenshot** - audit each one under its own `##` subheading inside the same report, rather than merging findings across screens.
+- **A screenshot with an unknown scale** - target size is defined in CSS pixels, but a screenshot from a 2x or 3x display stores device pixels, so a 44 CSS px button arrives 88 or 132 px wide in the file. Measuring 2.5.8 straight off image pixels turns a comfortable target into a violation, and the same arithmetic the other way hides a real one. Ask for the device pixel ratio or the CSS viewport width, or derive the ratio from a known device width (a 1170 px wide iPhone screenshot is 390 CSS px at 3x). Until the scale is settled, 2.5.8 goes under "Not verifiable from this input". Contrast is unaffected - colors do not change with scale.
 - **Text over a photo, gradient, or video background** - do not estimate a pass. File a P1 finding for indeterminate contrast and recommend testing the worst-case pixel region against the text color.
 - **A component with no visible content** (empty state, loading skeleton) - note it and ask whether a populated state is available, since several criteria (headings, labels, link purpose) cannot be judged from an empty shell.
 - **HTML/JSX with inline styles or unresolved CSS variables** - treat contrast and target size as not verifiable rather than guessing computed values.
