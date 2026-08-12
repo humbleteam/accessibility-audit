@@ -69,7 +69,7 @@ Example audit of a fictional app, "Acme Checkout" (not a real client or product)
 # Accessibility audit: Acme Checkout - payment step (screenshot)
 
 **Input type:** screenshot
-**Scope:** contrast, target size, visible labels, heading structure. Alt text, DOM order, ARIA, and keyboard behavior not checked - no HTML provided.
+**Scope:** contrast, non-text contrast, target size, visible labels, heading structure. Non-text contrast and target size were checked and came back clean. Alt text, DOM order, ARIA, and keyboard behavior not checked - no HTML provided.
 
 ## P0 - blocks use
 1. **"Pay now" button fails contrast**
@@ -91,7 +91,14 @@ Example audit of a fictional app, "Acme Checkout" (not a real client or product)
 
 ## Not verifiable from this input
 - 1.1.1 Non-text content - needs the DOM to confirm alt text on the card-brand icons
-- 2.1.1 / 2.1.2 Keyboard and keyboard trap - needs interaction or code
+- 1.3.1 Info and relationships - the heading levels are visible, the DOM structure behind them is not
+- 1.4.4 / 1.4.10 Resize text and reflow - need a screenshot at 200% text size and one at a 320px-wide viewport
+- 2.1.1 / 2.1.2 Keyboard and keyboard trap - need interaction or code
+- 2.4.4 Link purpose - needs the surrounding DOM context for the two footer links
+- 2.4.7 / 2.4.11 Focus visible and focus not obscured - need a focus-state screenshot
+- 3.2.2 On input - needs the interaction
+- 3.3.1 Error identification - needs an error-state screenshot
+- 3.3.8 Accessible authentication - needs the login flow
 - 4.1.2 Name, role, value - needs the accessibility tree
 
 ## Scope note
@@ -103,6 +110,7 @@ Expert-review pass against WCAG 2.2, not a substitute for assistive-technology t
 - The input type - screenshot, URL, or markup - decides which success criteria apply, so identifying it comes first.
 - The skill reads a fixed checklist ([`references/wcag22-checklist.md`](references/wcag22-checklist.md)) every run, so criteria stay consistent across audits.
 - Screenshot-only audits check contrast, non-text contrast, target size, and visible labels or headings - what pixels can prove. Everything else goes under "Not verifiable from this input" instead of being skipped silently.
+- **All 18 criteria are accounted for on every run**, each in exactly one place: a severity finding, the scope line when it was checked and came back clean, or the not-verifiable ledger. A screenshot audit normally files 13 criteria under not-verifiable, so a short ledger means criteria went missing rather than that the screen was clean.
 - HTML, JSX, and fetched URLs get the full 18-criterion pass, including alt attributes, label associations, ARIA roles, and focus-management code.
 - Findings sort into three severity tiers - P0 blocks use, P1 degrades use, P2 friction (keyboard trap = P0, missing focus ring = P1, heading skip = P2) - each carries an observed fact, a concrete fix, and a citation shaped `WCAG 2.2 SC x.x.x (Name, Level A/AA)`.
 - The checklist covers three of the nine success criteria new in WCAG 2.2 - 2.4.11 focus not obscured, 2.5.8 target size minimum, 3.3.8 accessible authentication - plus a closing scope note on every report: expert review, not assistive-technology testing, not a legal certification.

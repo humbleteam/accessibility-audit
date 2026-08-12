@@ -49,7 +49,9 @@ See `references/wcag22-checklist.md` for what to look for under each one.
 
 This is the rule that keeps the audit honest. Never claim a pass or a fail on a criterion the input cannot demonstrate.
 
-From a **screenshot alone**, you CAN check:
+**Every criterion leaves the audit somewhere.** All 18 in the table above must end up in exactly one place: a finding under P0, P1, or P2, or a line under "Not verifiable from this input". A criterion that appears in neither has been dropped, and a dropped criterion reads as a silent pass, which is the one thing this step exists to prevent. The three groups below are exhaustive and add up to 18; anything you cannot place in the first two belongs in the third.
+
+From a **screenshot alone**, you CAN check (5 criteria):
 
 - 1.4.3 contrast minimum - measure the rendered text and background colors.
 - 1.4.11 non-text contrast - measure icons, borders, and visible focus indicators.
@@ -57,14 +59,20 @@ From a **screenshot alone**, you CAN check:
 - 2.5.8 target size - measure tappable element dimensions against the 24x24 CSS px minimum, when the viewport scale is known or stated.
 - 3.3.2 labels or instructions - confirm visible instructions exist next to inputs that need them.
 
-From a **screenshot alone**, you CANNOT check, and must list under "Not verifiable from this input":
+From a **screenshot alone**, you can check these only when the matching state was supplied (7 criteria). Check what the image actually shows, and put the rest under "Not verifiable from this input" naming the state you would need:
+
+- 1.3.1 info and relationships - a visible heading hierarchy, list, or table is readable from the pixels; whether the DOM carries the same relationships is not.
+- 1.4.4 resize text - needs a screenshot of the page at 200% text size. One image at the default size cannot show whether content clips, overlaps, or stays usable when text scales.
+- 1.4.10 reflow - needs a screenshot at a 320px-wide viewport. One image at one width says nothing about whether the layout reflows to a single column without horizontal scrolling.
+- 2.4.4 link purpose - link text and its surrounding sentence are visible; purpose that depends on programmatic context is not.
+- 2.4.7 focus visible and 2.4.11 focus not obscured - both need a focus-state screenshot.
+- 3.3.1 error identification - needs an error-state screenshot, and then shows only whether the error is described in text rather than by color alone.
+
+From a **screenshot alone**, you CANNOT check, and must list under "Not verifiable from this input" (6 criteria):
 
 - 1.1.1 non-text content (alt text lives in the DOM, not the pixels).
-- 1.3.1 info and relationships (semantic structure).
 - 2.1.1 / 2.1.2 keyboard behavior and keyboard traps.
-- 2.4.4 link purpose when it depends on programmatic context.
-- 2.4.7 / 2.4.11 focus visibility, unless a focus-state screenshot was provided.
-- 3.2.2 on input, 3.3.1 error identification, 3.3.8 accessible authentication - all need interaction or flow, not a static image.
+- 3.2.2 on input, 3.3.8 accessible authentication - both need interaction or a flow, not a static image.
 - 4.1.2 name, role, value (needs the accessibility tree).
 
 From **HTML, JSX, or a fetched page**, check all 18 directly against the markup: alt attributes, heading and landmark structure, label associations, ARIA roles and states, tabindex and focus-management code, and any inline color values you can resolve to compute contrast. If CSS is not included, contrast and target size still fall into "not verifiable" unless computed values are given.
@@ -114,6 +122,8 @@ This is an expert-review pass against WCAG 2.2, not a substitute for testing wit
 
 Omit a severity section entirely when it has zero findings - do not pad it with "no issues found" filler under a heading that implies problems exist. Always include "Not verifiable from this input" when the input is a screenshot; when the audit covered HTML/JSX/URL end to end, write "None - full markup was available" instead of omitting the section. Always include the scope note.
 
+"Not verifiable from this input" is the ledger that makes Step 3 checkable. Every one of the 18 criteria is accounted for exactly once, across three places: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; or this ledger, for a criterion the input could not reach. A criterion in none of the three has been dropped silently. On a screenshot audit the ledger normally holds 13 criteria - the 7 partial ones whose matching state was not supplied, plus the 6 a static image can never reach - so a short ledger is the symptom of criteria going missing, not of a clean screen. Group entries on one line where they share a reason (`1.4.4 / 1.4.10 Resize text and reflow - need a 200% text-size screenshot and a 320px-wide one`) rather than dropping them to keep the report tidy.
+
 ## Edge cases
 
 - **Multiple screens or states in one screenshot** - audit each one under its own `##` subheading inside the same report, rather than merging findings across screens.
@@ -128,5 +138,6 @@ Omit a severity section entirely when it has zero findings - do not pad it with 
 
 - Do not invent a contrast ratio you did not compute from actual colors.
 - Do not mark a criterion "pass" because nothing looked obviously wrong - if it was not checked, it is "not verifiable," not a pass.
+- Do not let a criterion leave the report without appearing in either a severity section or the not-verifiable ledger. Silence is the most convincing false pass this audit can produce, because nothing in the output points at the gap.
 - Do not cite a WCAG success criterion you have not actually checked against.
 - Do not soften a P0 finding into P1 to make a report read better.
