@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0] - 2026-08-19
+
+- A "quick check" or "just the big ones" request had no legal output. The edge case said to report P0 only, while the accounting rule says every criterion lands in exactly one of a severity finding, the scope line when checked and clean, or the not-verifiable ledger - and a criterion that produced a P1 finding withheld by the requested depth fits none of them. Dropping it is forbidden by name in the failure modes; putting it on the scope line states it came back clean, which is false; printing it disobeys the request.
+- Added a fourth home, "Suppressed at this depth": one line per criterion whose finding the requested depth withholds, naming the SC number and the tier. Depth now limits what a finding says, never whether the report admits one exists.
+- Brought the three statements of the accounting rule into agreement. Step 3 and the failure-modes list still named two homes, from before the three-home rule was added in 1.2.0, so a criterion that was checked and came back clean was "dropped" under one statement and correctly filed under another. Under the two-home wording the only way to satisfy them was to file a passing criterion in the not-verifiable ledger, which asserts the input could not reach it. That move is now ruled out explicitly.
+- README: the accounting bullet lists all four homes, and a new FAQ answer covers asking for blockers only.
+
 ## [1.2.0] - 2026-08-12
 
 - Step 3 now accounts for all 18 criteria. Its two lists covered 16: 1.4.4 resize text and 1.4.10 reflow appeared in neither the screenshot-checkable group nor the not-verifiable one, so a screenshot audit could drop two Level AA criteria without a finding, a not-verifiable line, or any trace in the report.

@@ -49,7 +49,7 @@ See `references/wcag22-checklist.md` for what to look for under each one.
 
 This is the rule that keeps the audit honest. Never claim a pass or a fail on a criterion the input cannot demonstrate.
 
-**Every criterion leaves the audit somewhere.** All 18 in the table above must end up in exactly one place: a finding under P0, P1, or P2, or a line under "Not verifiable from this input". A criterion that appears in neither has been dropped, and a dropped criterion reads as a silent pass, which is the one thing this step exists to prevent. The three groups below are exhaustive and add up to 18; anything you cannot place in the first two belongs in the third.
+**Every criterion leaves the audit somewhere.** All 18 in the table above must end up in exactly one of the four homes defined under Output format: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion whose finding the requested depth withholds; or a line under "Not verifiable from this input". A criterion in none of the four has been dropped, and a dropped criterion reads as a silent pass, which is the one thing this step exists to prevent. The homes are not interchangeable: a criterion that was checked and passed belongs on the scope line and never in the ledger, which says the input could not reach it. The three groups below are exhaustive and add up to 18; anything you cannot place in the first two belongs in the third.
 
 From a **screenshot alone**, you CAN check (5 criteria):
 
@@ -116,13 +116,17 @@ Use exactly this structure:
 ## Not verifiable from this input
 - <SC number and name> - requires <HTML / URL / keyboard test / focus-state screenshot>
 
+## Suppressed at this depth
+(only when the request limited the report to P0 - omit this heading otherwise)
+- <SC number and name> - <P1 / P2> finding found, write-up withheld at the requested depth
+
 ## Scope note
 This is an expert-review pass against WCAG 2.2, not a substitute for testing with people who use assistive technology, and not a legal ADA or Section 508 compliance certification.
 ```
 
-Omit a severity section entirely when it has zero findings - do not pad it with "no issues found" filler under a heading that implies problems exist. Always include "Not verifiable from this input" when the input is a screenshot; when the audit covered HTML/JSX/URL end to end, write "None - full markup was available" instead of omitting the section. Always include the scope note.
+Omit a severity section entirely when it has zero findings - do not pad it with "no issues found" filler under a heading that implies problems exist. Always include "Not verifiable from this input" when the input is a screenshot; when the audit covered HTML/JSX/URL end to end, write "None - full markup was available" instead of omitting the section. Include "Suppressed at this depth" only when the request limited the output depth, and never as a stand-in for a severity section that genuinely had no findings - an omitted section says there was nothing to report, which is the opposite of what suppression means. Always include the scope note.
 
-"Not verifiable from this input" is the ledger that makes Step 3 checkable. Every one of the 18 criteria is accounted for exactly once, across three places: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; or this ledger, for a criterion the input could not reach. A criterion in none of the three has been dropped silently. On a screenshot audit the ledger normally holds 13 criteria - the 7 partial ones whose matching state was not supplied, plus the 6 a static image can never reach - so a short ledger is the symptom of criteria going missing, not of a clean screen. Group entries on one line where they share a reason (`1.4.4 / 1.4.10 Resize text and reflow - need a 200% text-size screenshot and a 320px-wide one`) rather than dropping them to keep the report tidy.
+"Not verifiable from this input" is the ledger that makes Step 3 checkable. Every one of the 18 criteria is accounted for exactly once, across four places: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion that produced a finding the requested depth withholds; or this ledger, for a criterion the input could not reach. A criterion in none of the four has been dropped silently. On a screenshot audit the ledger normally holds 13 criteria - the 7 partial ones whose matching state was not supplied, plus the 6 a static image can never reach - so a short ledger is the symptom of criteria going missing, not of a clean screen. Group entries on one line where they share a reason (`1.4.4 / 1.4.10 Resize text and reflow - need a 200% text-size screenshot and a 320px-wide one`) rather than dropping them to keep the report tidy.
 
 ## Edge cases
 
@@ -131,13 +135,13 @@ Omit a severity section entirely when it has zero findings - do not pad it with 
 - **Text over a photo, gradient, or video background** - do not estimate a pass. File a P1 finding for indeterminate contrast and recommend testing the worst-case pixel region against the text color.
 - **A component with no visible content** (empty state, loading skeleton) - note it and ask whether a populated state is available, since several criteria (headings, labels, link purpose) cannot be judged from an empty shell.
 - **HTML/JSX with inline styles or unresolved CSS variables** - treat contrast and target size as not verifiable rather than guessing computed values.
-- **A "quick check" or "just the big ones" request** - still run the full criteria list, but report P0 only, and note in the scope line that P1/P2 were checked but suppressed from the output.
+- **A "quick check" or "just the big ones" request** - still run the full criteria list, still write up P0 in full, and hold back the P1 and P2 write-ups. Depth limits what a finding says, never whether the report admits one exists: every criterion that produced a withheld finding gets one line under "Suppressed at this depth" naming its SC number and the tier it landed in, and the scope line says the depth was limited. The other two moves are both illegal. Dropping those criteria leaves them in none of the four homes, and a criterion that leaves the report silently reads as a pass - the fastest way this audit can certify a screen it actually failed. Putting them on the scope line is worse, because that line is reserved for criteria that were checked and came back clean, and a withheld finding is not clean. Offer to write up any suppressed line on request.
 - **A second audit of the same screen after fixes** - re-run the full process; do not assume prior findings still hold.
 
 ## Failure modes to avoid
 
 - Do not invent a contrast ratio you did not compute from actual colors.
 - Do not mark a criterion "pass" because nothing looked obviously wrong - if it was not checked, it is "not verifiable," not a pass.
-- Do not let a criterion leave the report without appearing in either a severity section or the not-verifiable ledger. Silence is the most convincing false pass this audit can produce, because nothing in the output points at the gap.
+- Do not let a criterion leave the report without landing in one of the four homes: a severity section, the scope line as checked and clean, the suppressed roster, or the not-verifiable ledger. Silence is the most convincing false pass this audit can produce, because nothing in the output points at the gap. Do not file a criterion that was checked and passed under the ledger either - the ledger claims the input could not reach it, and that claim would be false.
 - Do not cite a WCAG success criterion you have not actually checked against.
 - Do not soften a P0 finding into P1 to make a report read better.

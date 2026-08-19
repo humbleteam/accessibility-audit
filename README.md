@@ -110,7 +110,7 @@ Expert-review pass against WCAG 2.2, not a substitute for assistive-technology t
 - The input type - screenshot, URL, or markup - decides which success criteria apply, so identifying it comes first.
 - The skill reads a fixed checklist ([`references/wcag22-checklist.md`](references/wcag22-checklist.md)) every run, so criteria stay consistent across audits.
 - Screenshot-only audits check contrast, non-text contrast, target size, and visible labels or headings - what pixels can prove. Everything else goes under "Not verifiable from this input" instead of being skipped silently.
-- **All 18 criteria are accounted for on every run**, each in exactly one place: a severity finding, the scope line when it was checked and came back clean, or the not-verifiable ledger. A screenshot audit normally files 13 criteria under not-verifiable, so a short ledger means criteria went missing rather than that the screen was clean.
+- **All 18 criteria are accounted for on every run**, each in exactly one place: a severity finding, the scope line when it was checked and came back clean, the suppressed roster when a P0-only report withholds a lower-severity finding, or the not-verifiable ledger. A screenshot audit normally files 13 criteria under not-verifiable, so a short ledger means criteria went missing rather than that the screen was clean.
 - HTML, JSX, and fetched URLs get the full 18-criterion pass, including alt attributes, label associations, ARIA roles, and focus-management code.
 - Findings sort into three severity tiers - P0 blocks use, P1 degrades use, P2 friction (keyboard trap = P0, missing focus ring = P1, heading skip = P2) - each carries an observed fact, a concrete fix, and a citation shaped `WCAG 2.2 SC x.x.x (Name, Level A/AA)`.
 - The checklist covers three of the nine success criteria new in WCAG 2.2 - 2.4.11 focus not obscured, 2.5.8 target size minimum, 3.3.8 accessible authentication - plus a closing scope note on every report: expert review, not assistive-technology testing, not a legal certification.
@@ -132,6 +132,9 @@ WCAG 2.2 SC 1.4.3 requires 4.5:1 for normal text and 3:1 for large text (18pt re
 
 **How do I check accessibility from a screenshot?**
 Measure what pixels can prove: contrast, non-text contrast, target size against the 24x24 CSS px minimum, and whether labels and headings are visually present. Everything else needs HTML or a live URL, and gets listed as not verifiable rather than guessed.
+
+**Can I ask for just the critical accessibility issues?**
+Yes - ask for a quick check or just the blockers, and only P0 gets written up. The full 18-criterion pass still runs underneath it, and any criterion that produced a P1 or P2 finding is named on one line under "Suppressed at this depth" with the tier it landed in. A shorter report never turns a finding into a silent pass; ask for the detail on any of those lines and it gets written up.
 
 **Does this replace a legal ADA or Section 508 audit?**
 No. It's an expert-review pass grounded in WCAG 2.2, not a legal compliance certification. Legal compliance audits typically require testing with assistive-technology users and a documented methodology beyond one review pass.
