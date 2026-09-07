@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1] - 2026-09-07
+
+- README example: the P2 finding read heading levels off a screenshot. Its Observed line named "Checkout" as an H1 and "Payment details" as an H3 and filed the missing H2 between them as the finding, while the same report's ledger three lines below states that a screenshot shows the visual hierarchy and not the DOM structure behind it. Step 5 requires an Observed line to carry what was seen rather than an inference, so the worked example demonstrated the failure mode the skill opens with.
+- The P2 finding is now one a screenshot can prove: two sections carrying the same generic heading, which is what SC 2.4.6 asks about - whether headings and labels describe topic or purpose, per the checklist row. A heading-level skip remains a legal P2 finding from HTML, JSX, or a fetched URL, where the levels are actually readable.
+- The ledger's 1.3.1 line said "the heading levels are visible". Reworded to match Step 3: the visual heading hierarchy is readable, the DOM structure behind it is not.
+- Criterion accounting unchanged: 2.4.6 is still the P2 finding, 1.4.11 and 2.5.8 still sit on the scope line as checked and clean, and the ledger still holds 13.
+
 ## [1.3.0] - 2026-08-19
 
 - A "quick check" or "just the big ones" request had no legal output. The edge case said to report P0 only, while the accounting rule says every criterion lands in exactly one of a severity finding, the scope line when checked and clean, or the not-verifiable ledger - and a criterion that produced a P1 finding withheld by the requested depth fits none of them. Dropping it is forbidden by name in the failure modes; putting it on the scope line states it came back clean, which is false; printing it disobeys the request.

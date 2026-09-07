@@ -69,7 +69,7 @@ Example audit of a fictional app, "Acme Checkout" (not a real client or product)
 # Accessibility audit: Acme Checkout - payment step (screenshot)
 
 **Input type:** screenshot
-**Scope:** contrast, non-text contrast, target size, visible labels, heading structure. Non-text contrast and target size were checked and came back clean. Alt text, DOM order, ARIA, and keyboard behavior not checked - no HTML provided.
+**Scope:** contrast, non-text contrast, target size, visible labels, heading and label text. Non-text contrast and target size were checked and came back clean. Alt text, DOM order, ARIA, and keyboard behavior not checked - no HTML provided.
 
 ## P0 - blocks use
 1. **"Pay now" button fails contrast**
@@ -84,14 +84,14 @@ Example audit of a fictional app, "Acme Checkout" (not a real client or product)
    - WCAG 2.2 SC 3.3.2 (Labels or instructions, Level A)
 
 ## P2 - friction
-1. **Heading skips from H1 to H3**
-   - Observed: "Checkout" (H1) is followed by "Payment details" as H3, no H2 between them.
-   - Fix: make "Payment details" an H2, or confirm the DOM matches the visual hierarchy.
+1. **Two sections share one generic heading**
+   - Observed: "Details" sits above the card fields, and "Details" again above the billing-address fields below them, so neither heading names the section it introduces.
+   - Fix: rename them "Payment details" and "Billing address" so each heading describes its own section.
    - WCAG 2.2 SC 2.4.6 (Headings and labels, Level AA)
 
 ## Not verifiable from this input
 - 1.1.1 Non-text content - needs the DOM to confirm alt text on the card-brand icons
-- 1.3.1 Info and relationships - the heading levels are visible, the DOM structure behind them is not
+- 1.3.1 Info and relationships - the visual heading hierarchy is readable, the DOM structure behind it is not
 - 1.4.4 / 1.4.10 Resize text and reflow - need a screenshot at 200% text size and one at a 320px-wide viewport
 - 2.1.1 / 2.1.2 Keyboard and keyboard trap - need interaction or code
 - 2.4.4 Link purpose - needs the surrounding DOM context for the two footer links
