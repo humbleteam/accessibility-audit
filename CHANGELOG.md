@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0] - 2026-09-12
+
+- A report covering more than one screen had no legal shape. The edge case asks for each screen under its own `##` subheading, which is the level the output format already gives to `## P0 - blocks use` and the ledger, so the screen headings and the severity headings landed at the same depth and nothing in the report marked where one screen's verdict ended.
+- The accounting rule collided with it harder than the headings did. Every criterion lands in exactly one of the four homes, stated at report level, while a criterion can be a P0 on the first screen and clean on the second - two readings that one entry cannot hold. Whichever one got written, the other left the report, and a criterion that leaves the report reads as a pass.
+- Accounting is now per audited screen. Each screen takes a `##` heading with its severity sections, its ledger and its suppressed roster at `###`, and carries a complete set of the four homes. The scope line moves under the screen heading, since it is the home for that screen's checked-and-clean criteria; the input-type line and the scope note stay at report level, one input and one method for the whole report.
+- The ledger's expected length is stated as per screen too. A two-screen screenshot report holds two ledgers of about 13, not one shared between them, so the short-ledger symptom still works when a report covers more than one screen.
+- The edge case used to open "Multiple screens or states in one screenshot", putting two cases with opposite handling under one heading. Several states of one screen are one screen with more evidence, and the extra state unlocks the partial criteria it covers under Step 3, so they are now separate bullets: one set of the four homes for the states case, one set per screen for the other.
+- README: the accounting bullet says the count runs per screen.
+
 ## [1.3.1] - 2026-09-07
 
 - README example: the P2 finding read heading levels off a screenshot. Its Observed line named "Checkout" as an H1 and "Payment details" as an H3 and filed the missing H2 between them as the finding, while the same report's ledger three lines below states that a screenshot shows the visual hierarchy and not the DOM structure behind it. Step 5 requires an Observed line to carry what was seen rather than an inference, so the worked example demonstrated the failure mode the skill opens with.

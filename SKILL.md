@@ -49,7 +49,7 @@ See `references/wcag22-checklist.md` for what to look for under each one.
 
 This is the rule that keeps the audit honest. Never claim a pass or a fail on a criterion the input cannot demonstrate.
 
-**Every criterion leaves the audit somewhere.** All 18 in the table above must end up in exactly one of the four homes defined under Output format: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion whose finding the requested depth withholds; or a line under "Not verifiable from this input". A criterion in none of the four has been dropped, and a dropped criterion reads as a silent pass, which is the one thing this step exists to prevent. The homes are not interchangeable: a criterion that was checked and passed belongs on the scope line and never in the ledger, which says the input could not reach it. The three groups below are exhaustive and add up to 18; anything you cannot place in the first two belongs in the third.
+**Every criterion leaves the audit somewhere.** All 18 in the table above must end up in exactly one of the four homes defined under Output format: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion whose finding the requested depth withholds; or a line under "Not verifiable from this input". A criterion in none of the four has been dropped, and a dropped criterion reads as a silent pass, which is the one thing this step exists to prevent. The homes are not interchangeable: a criterion that was checked and passed belongs on the scope line and never in the ledger, which says the input could not reach it. The three groups below are exhaustive and add up to 18; anything you cannot place in the first two belongs in the third. The count runs per audited screen, not per report: a criterion can fail on one screen and come back clean on the next, so a report covering two screens carries two complete sets of the four homes. One report-wide verdict would have to drop one of the two readings, and the dropped one reads as a pass.
 
 From a **screenshot alone**, you CAN check (5 criteria):
 
@@ -93,7 +93,7 @@ Every finding needs three parts, in this order:
 
 ## Output format
 
-Use exactly this structure:
+Use exactly this structure for a report covering one screen:
 
 ```
 # Accessibility audit: <name or URL of what was reviewed>
@@ -124,13 +124,44 @@ Use exactly this structure:
 This is an expert-review pass against WCAG 2.2, not a substitute for testing with people who use assistive technology, and not a legal ADA or Section 508 compliance certification.
 ```
 
+When the input shows more than one screen, each screen takes its own `##` heading and the four homes drop to `###` underneath it. The screen headings and the severity headings cannot share a level: at the same depth there is nothing in the report that says where one screen's verdict stops and the next one's begins.
+
+```
+# Accessibility audit: <name or URL of what was reviewed>
+
+**Input type:** screenshot | URL | HTML/JSX
+
+## <Screen 1 name>
+
+**Scope:** <what was checked on this screen>
+
+### P0 - blocks use
+### P1 - degrades use
+### P2 - friction
+### Not verifiable from this input
+### Suppressed at this depth
+
+## <Screen 2 name>
+
+**Scope:** <what was checked on this screen>
+
+### P0 - blocks use
+(the same sections, filled in for this screen, under the same omission rules)
+
+## Scope note
+<written once at the end - it describes the method, not a screen>
+```
+
+The scope line moves under each screen heading, because it is one of the four homes and carries that screen's checked-and-clean criteria. The input-type line and the scope note stay at report level: one input was supplied, and the method is the same for every screen in it.
+
 Omit a severity section entirely when it has zero findings - do not pad it with "no issues found" filler under a heading that implies problems exist. Always include "Not verifiable from this input" when the input is a screenshot; when the audit covered HTML/JSX/URL end to end, write "None - full markup was available" instead of omitting the section. Include "Suppressed at this depth" only when the request limited the output depth, and never as a stand-in for a severity section that genuinely had no findings - an omitted section says there was nothing to report, which is the opposite of what suppression means. Always include the scope note.
 
-"Not verifiable from this input" is the ledger that makes Step 3 checkable. Every one of the 18 criteria is accounted for exactly once, across four places: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion that produced a finding the requested depth withholds; or this ledger, for a criterion the input could not reach. A criterion in none of the four has been dropped silently. On a screenshot audit the ledger normally holds 13 criteria - the 7 partial ones whose matching state was not supplied, plus the 6 a static image can never reach - so a short ledger is the symptom of criteria going missing, not of a clean screen. Group entries on one line where they share a reason (`1.4.4 / 1.4.10 Resize text and reflow - need a 200% text-size screenshot and a 320px-wide one`) rather than dropping them to keep the report tidy.
+"Not verifiable from this input" is the ledger that makes Step 3 checkable. Every one of the 18 criteria is accounted for exactly once, across four places: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion that produced a finding the requested depth withholds; or this ledger, for a criterion the input could not reach. A criterion in none of the four has been dropped silently. On a screenshot audit the ledger normally holds 13 criteria - the 7 partial ones whose matching state was not supplied, plus the 6 a static image can never reach - so a short ledger is the symptom of criteria going missing, not of a clean screen. That 13 is per screen: a two-screen report holds two ledgers of about that length, not one shared between them. Group entries on one line where they share a reason (`1.4.4 / 1.4.10 Resize text and reflow - need a 200% text-size screenshot and a 320px-wide one`) rather than dropping them to keep the report tidy.
 
 ## Edge cases
 
-- **Multiple screens or states in one screenshot** - audit each one under its own `##` subheading inside the same report, rather than merging findings across screens.
+- **Multiple screens in one screenshot** - audit each screen under its own `##` heading inside the same report, with its severity sections, its ledger, and its suppressed roster at `###` underneath, so each screen carries a complete set of the four homes. Accounting runs per screen: the same criterion can be a P0 on the first screen and clean on the second, and one report-wide entry can only record one of those. Findings are never merged across screens, and no screen inherits a verdict from the one above it: a criterion missing from a screen's set was not checked on that screen, which is the silent pass the accounting exists to catch.
+- **Several states of one screen in one image** - not the case above. Two states of the same screen are one screen with more evidence, and the extra state unlocks the partial criteria it covers per Step 3: an error state reaches 3.3.1, a focus state reaches 2.4.7 and 2.4.11. One screen, one set of the four homes, and the scope line names the states that were supplied.
 - **A screenshot with an unknown scale** - target size is defined in CSS pixels, but a screenshot from a 2x or 3x display stores device pixels, so a 44 CSS px button arrives 88 or 132 px wide in the file. Measuring 2.5.8 straight off image pixels turns a comfortable target into a violation, and the same arithmetic the other way hides a real one. Ask for the device pixel ratio or the CSS viewport width, or derive the ratio from a known device width (a 1170 px wide iPhone screenshot is 390 CSS px at 3x). Until the scale is settled, 2.5.8 goes under "Not verifiable from this input". Contrast is unaffected - colors do not change with scale.
 - **Text over a photo, gradient, or video background** - do not estimate a pass. File a P1 finding for indeterminate contrast and recommend testing the worst-case pixel region against the text color.
 - **A component with no visible content** (empty state, loading skeleton) - note it and ask whether a populated state is available, since several criteria (headings, labels, link purpose) cannot be judged from an empty shell.
