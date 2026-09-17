@@ -63,7 +63,14 @@ Restart Claude Code after installing, then confirm it loaded - Claude Code reads
 
 ## Example output
 
-Example audit of a fictional app, "Acme Checkout" (not a real client or product).
+Two runs against a fictional app, "Acme Checkout" (not a real client or product). The
+first reads a screenshot, where five criteria are checkable outright and the ledger does
+most of the work. The second reads a JSX component whose stylesheet was not pasted with
+it, which is what the markup path usually looks like in practice: ten criteria come off
+the code, and the eight that need a computed value or a rendered page stay in the
+ledger.
+
+### Screenshot input
 
 ```
 # Accessibility audit: Acme Checkout - payment step (screenshot)
@@ -105,14 +112,66 @@ Example audit of a fictional app, "Acme Checkout" (not a real client or product)
 Expert-review pass against WCAG 2.2, not a substitute for assistive-technology testing, and not a legal ADA or Section 508 compliance certification.
 ```
 
+### JSX input, styles not supplied
+
+An order-summary component pasted as JSX. The class names resolve to a CSS module that
+was not supplied, so nothing that needs a computed color, size, or focus style can be
+checked. Ten criteria still resolve off the markup - four as findings, six checked and
+clean on the scope line - and the remaining eight fill the ledger, which is where the
+count comes back to 18.
+
+```
+# Accessibility audit: Acme Checkout - order summary panel (JSX)
+
+**Input type:** HTML/JSX
+**Scope:** the full markup - alt attributes, heading structure, keyboard reachability and traps, link purpose, heading and label text, on-input behavior, error identification, visible labels, and accessible names. Checked and clean: 2.1.2 no keyboard trap, 2.4.4 link purpose, 2.4.6 headings and labels, 3.2.2 on input, 3.3.1 error identification, 3.3.2 labels or instructions. The class names resolve to a CSS module that was not supplied, so no computed color, size, or focus style was available.
+
+## P0 - blocks use
+1. **Order-details row cannot be reached by keyboard**
+   - Observed: `<div className="summary-row" onClick={() => setOpen(!open)}>` with no `role`, no `tabIndex`, and no key handler.
+   - Fix: render it as `<button type="button">`, or add `role="button"`, `tabIndex={0}`, and a handler for Enter and Space.
+   - WCAG 2.2 SC 2.1.1 (Keyboard, Level A)
+
+## P1 - degrades use
+1. **Remove-item button has no accessible name**
+   - Observed: `<button onClick={remove}><TrashIcon /></button>` - no `aria-label`, no text child, and the inline SVG carries no `title`.
+   - Fix: add `aria-label="Remove <item name>"` to the button and `aria-hidden="true"` to the icon.
+   - WCAG 2.2 SC 4.1.2 (Name, role, value, Level A)
+2. **Card-brand logo has no alt attribute**
+   - Observed: `<img src="/img/visa.svg" />` beside the masked card number, with no `alt`.
+   - Fix: `alt="Visa"` where the brand is not named in adjacent text, `alt=""` where it is.
+   - WCAG 2.2 SC 1.1.1 (Non-text content, Level A)
+
+## P2 - friction
+1. **Heading level skips from h1 to h3**
+   - Observed: `<h1>Order summary</h1>` followed by `<h3>Items</h3>` and `<h3>Totals</h3>`, with no h2 between them.
+   - Fix: promote both section headings to `<h2>`, or add the h2 they belong under.
+   - WCAG 2.2 SC 1.3.1 (Info and relationships, Level A)
+
+## Not verifiable from this input
+- 1.4.3 / 1.4.11 Contrast minimum and non-text contrast - the colors are in the unsupplied CSS module; a class name is not a value
+- 1.4.4 / 1.4.10 Resize text and reflow - need the rendered page at 200% text size and at a 320px-wide viewport
+- 2.4.7 / 2.4.11 Focus visible and focus not obscured - the focus styles are in the same unsupplied CSS, and obscuring needs the rendered layout
+- 2.5.8 Target size - needs computed dimensions; the JSX carries class names, not sizes
+- 3.3.8 Accessible authentication - this component holds no sign-in step; the criterion is reached from the authentication flow, which was not supplied
+
+## Scope note
+Expert-review pass against WCAG 2.2, not a substitute for assistive-technology testing, and not a legal ADA or Section 508 compliance certification.
+```
+
+The two headings tell the criteria apart: 2.4.6 asks whether heading and label text describes its
+topic, and "Items" and "Totals" do, so it sits on the scope line as clean. The level skip underneath
+them is 1.3.1, and it is a finding here only because JSX carries the levels - the screenshot run
+above files its heading problem under 2.4.6 for exactly that reason.
+
 ## How it works
 
 - The input type - screenshot, URL, or markup - decides which success criteria apply, so identifying it comes first.
 - The skill reads a fixed checklist ([`references/wcag22-checklist.md`](references/wcag22-checklist.md)) every run, so criteria stay consistent across audits.
 - Screenshot-only audits check contrast, non-text contrast, target size, and visible labels or headings - what pixels can prove. Everything else goes under "Not verifiable from this input" instead of being skipped silently.
-- **All 18 criteria are accounted for on every run**, each in exactly one place: a severity finding, the scope line when it was checked and came back clean, the suppressed roster when a P0-only report withholds a lower-severity finding, or the not-verifiable ledger. A screenshot audit normally files 13 criteria under not-verifiable, so a short ledger means criteria went missing rather than that the screen was clean. The accounting runs per screen: a report covering two screens gives each its own `##` heading and its own complete set, since a criterion can fail on one and come back clean on the other.
-- HTML, JSX, and fetched URLs get the full 18-criterion pass, including alt attributes, label associations, ARIA roles, and focus-management code.
-- Findings sort into three severity tiers - P0 blocks use, P1 degrades use, P2 friction (keyboard trap = P0, missing focus ring = P1, heading skip = P2) - each carries an observed fact, a concrete fix, and a citation shaped `WCAG 2.2 SC x.x.x (Name, Level A/AA)`.
+- **All 18 criteria are accounted for on every run**, each in exactly one place: a severity finding, the scope line when it was checked and came back clean, the suppressed roster when a P0-only report withholds a lower-severity finding, or the not-verifiable ledger. A screenshot audit normally files 13 criteria under not-verifiable, so a short ledger means criteria went missing rather than that the screen was clean. Markup has its own expected lengths: none when the stylesheet came with it, and at least the seven criteria that need a computed value or a rendered page when it did not. The accounting runs per screen: a report covering two screens gives each its own `##` heading and its own complete set, since a criterion can fail on one and come back clean on the other.
+- HTML, JSX, and fetched URLs get the full 18-criterion pass, including alt attributes, label associations, ARIA roles, and focus-management code - as long as the styles come too. A component pasted without its stylesheet keeps contrast, resize, reflow, focus visibility, and target size in the ledger, because a class name is not a value.
+- Findings sort into three severity tiers - P0 blocks use, P1 degrades use, P2 friction (keyboard trap = P0, missing focus ring = P1, heading skip in markup = P2) - each carries an observed fact, a concrete fix, and a citation shaped `WCAG 2.2 SC x.x.x (Name, Level A/AA)`.
 - The checklist covers three of the nine success criteria new in WCAG 2.2 - 2.4.11 focus not obscured, 2.5.8 target size minimum, 3.3.8 accessible authentication - plus a closing scope note on every report: expert review, not assistive-technology testing, not a legal certification.
 
 ## How is this different from just asking the model?
