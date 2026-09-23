@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0] - 2026-09-23
+
+- Step 1 asks for two inputs to be used together and Step 3 had no shape for the pair. "If more than one input type is given (for example a URL plus a screenshot of one of its states), use both and check against the wider scope" sends the audit down the markup path carrying an image, and the markup path recognises exactly two ledger lengths: empty when the styles came with the markup, and the seven style-dependent criteria plus whatever the snippet's scope cannot reach when they did not. A screenshot is neither styles nor nothing.
+- What that left with no legal answer: a JSX component pasted with a screenshot of the rendered screen. Writing "None - full markup was available" claims a coverage the styles never gave, and it is the false pass this repo already fixed once for styleless markup in 1.5.0. Leaving all seven in the ledger is the opposite error and the newer one, because the ledger says the input could not reach a criterion, and a rendered image of the screen reaches contrast, non-text contrast and target size for everything it shows.
+- New edge case, "Markup plus a screenshot of the same screen". The image is the styles for what it renders: 1.4.3 and 1.4.11 leave the ledger for the text pairs, icons and borders actually visible in it, and 2.5.8 leaves once the scale is settled under the unknown-scale case. The remaining four stay unless the matching image was supplied, 1.4.4 at 200% text size, 1.4.10 at 320px wide, 2.4.7 and 2.4.11 in a focus state, which is the partial-criteria test from Step 3 applied inside the markup path rather than a new rule.
+- The scope line now names which images arrived, not that a screenshot did. "A screenshot was supplied" and "the focus state was supplied" are different coverages, and only the second one clears 2.4.7.
+- Step 3's markup paragraph names the screenshot as the third thing that moves a criterion out of the ledger, alongside a resolvable inline color and a stated computed value, scoped to what the image renders. The Output format paragraph names the pair as a fourth case that keeps a real ledger, so "None - full markup was available" stays tied to markup arriving with the styles that resolve its values.
+
 ## [1.5.0] - 2026-09-17
 
 - The markup path had no worked example anywhere in the repo, and the rule underneath it undercounted what markup alone can prove. Step 3 closed its HTML/JSX paragraph with "if CSS is not included, contrast and target size still fall into not verifiable" - two criteria, where five more need the same styles: 1.4.11 non-text contrast, 1.4.4 resize text, 1.4.10 reflow, 2.4.7 focus visible, and 2.4.11 focus not obscured.
