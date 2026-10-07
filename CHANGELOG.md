@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.8.0] - 2026-10-07
+
+- Step 1 called a fetch result "the rendered HTML" and Step 3 said a fetch returns the document and not the rendered page. The same input was two things in one file, and the sentence a reader meets first was the wrong one.
+- What that left with no legal answer: a URL for a client-rendered app. The fetch succeeds and returns a mount node with its script tags, so the document holds no headings, no form controls, no label associations and no ARIA. The markup path reads structure off exactly those, and with none of them present every criterion it resolves off the code resolves nothing, while the ledger sits at one of the two URL lengths Step 3 defines. The report then states that structure was read and came back clean, off a document with no structure in it. A sign-in wall and a consent interstitial do the same thing by answering with a different page than the one named.
+- This is the false pass 1.5.0 fixed for styleless markup, 1.6.0 fixed for markup plus a screenshot and 1.7.0 fixed for source-only audits, arriving a fourth time through a fetch that worked. It is the most convincing of the four, because the fetch did succeed and the input-type line is accurate.
+- New edge case, "A URL whose fetch returned a shell rather than the page". How to spot it is readable off the document: a body with no headings, no form controls and no landmarks for a screen that visibly has them is a shell, and a title or form that does not match the page requested is an interstitial. What follows is one of three moves - ask for the rendered DOM an element inspector copies out, ask for a screenshot, or audit what arrived and name it as the shell, in which case nearly every criterion sits in the ledger because the input in hand is not the screen anyone asked about. "The fetch returned HTTP 200" is not a coverage.
+- Step 1's URL bullet now says the source of truth is the document the fetch returned, and points at the ledger length in Step 3 and at the shell case. Step 3's URL paragraph says both of its lengths assume the document carries the screen's markup, which a successful fetch does not guarantee. The Output format ledger-length paragraph adds the third outcome for a URL.
+- `references/wcag22-checklist.md`: a reading note that the code grades assume there is code to read, since every row a markup input settles is settled by an attribute, a level, an association or a role. README: the accounting bullet carries the shell, and a new FAQ answer on auditing a single-page app from its URL.
+
 ## [1.7.0] - 2026-10-01
 
 - The styles rule treated one phrase as one thing. Step 3 said every criterion needing "a computed value or a rendered page" leaves the ledger once the styles arrive with the markup, and those are two different kinds of evidence: a stylesheet is a computed value and a stylesheet is not a rendered page. The markup path's two ledger lengths followed from that merge, and the shorter one was empty.
