@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0] - 2026-10-14
+
+- The `Example output` preamble called the JSX run's ledger "the eight that need a computed value or a rendered page". Seven of those eight need one; the eighth is 3.3.8, and it is in the ledger because the component holds no sign-in step. The arithmetic was right and the reason was wrong: ten off the code plus eight in the ledger is 18, and a reader who checks the claim instead of the sum finds seven style-dependent and rendered-condition criteria against a stated eight.
+- Both other surfaces that state the length already said it correctly, which is what made this one wrong rather than merely loose. Step 3 writes the styleless-markup ledger as "at least the seven style-dependent criteria from Step 3 ... plus any criterion the snippet's scope cannot reach, such as 3.3.8 on a component that holds no sign-in step", the `How it works` bullet says "at least the seven", and `references/wcag22-checklist.md` sorts the same seven across its two reading notes. The preamble was the only place the open-ended length was written as a closed number.
+- That is the part a reader acts on. "At least seven" says a styleless-markup ledger has a floor and that the snippet's own scope decides the rest, so a ledger of eight or nine is expected and a ledger of six is a dropped criterion. "Eight that need a computed value or a rendered page" says the length is fixed at eight and names a cause that cannot produce it, so the next audit either files a scope-bound criterion as style-dependent or pads the ledger to reach eight. Both are the silent pass Step 3 exists to prevent, arriving through the count instead of through a criterion.
+- The preamble now names the split - seven for the computed value or the rendered page, the eighth for a scope the component does not reach - and the `JSX input` section carries the same split where it introduces its own ledger, with the four computed-value and three rendered-condition criteria told apart and 3.3.8 named as the criterion that would be in the ledger with every style in hand.
+- No rule, criterion, severity or ledger entry changed. The example's own ledger already gave 3.3.8 its scope reason on its own line, and the counts were verified unchanged: four findings plus six on the scope line plus eight in the ledger is 18, and the seven style-dependent criteria are 1.4.3, 1.4.11, 2.4.7 and 2.5.8 for a computed value and 1.4.4, 1.4.10 and 2.4.11 for a rendered condition.
+
 ## [1.8.0] - 2026-10-07
 
 - Step 1 called a fetch result "the rendered HTML" and Step 3 said a fetch returns the document and not the rendered page. The same input was two things in one file, and the sentence a reader meets first was the wrong one.

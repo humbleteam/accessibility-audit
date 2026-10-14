@@ -67,8 +67,9 @@ Two runs against a fictional app, "Acme Checkout" (not a real client or product)
 first reads a screenshot, where five criteria are checkable outright and the ledger does
 most of the work. The second reads a JSX component whose stylesheet was not pasted with
 it, which is what the markup path usually looks like in practice: ten criteria come off
-the code, and the eight that need a computed value or a rendered page stay in the
-ledger.
+the code, and eight stay in the ledger - seven of them because they need a computed
+value or a rendered page, and the eighth because the component's own scope does not
+reach it.
 
 ### Screenshot input
 
@@ -117,8 +118,14 @@ Expert-review pass against WCAG 2.2, not a substitute for assistive-technology t
 An order-summary component pasted as JSX. The class names resolve to a CSS module that
 was not supplied, so nothing that needs a computed color, size, or focus style can be
 checked. Ten criteria still resolve off the markup - four as findings, six checked and
-clean on the scope line - and the remaining eight fill the ledger, which is where the
-count comes back to 18.
+clean on the scope line - and eight fill the ledger, which is where the count comes back
+to 18. Seven of those eight are there because the stylesheet is missing: the four that
+need a computed value and the three that need the page rendered under a condition. 3.3.8
+is the eighth, and it would sit in the ledger with every style in hand - this component
+holds no sign-in step, so the criterion is reached from a flow nobody supplied. That is
+the split behind the "at least the seven" in `SKILL.md`: the missing styles set the seven,
+and a snippet's own scope adds whatever else it cannot reach, so a styleless-markup
+ledger has a floor rather than a length.
 
 ```
 # Accessibility audit: Acme Checkout - order summary panel (JSX)
