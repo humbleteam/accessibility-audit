@@ -196,8 +196,11 @@ WCAG 2.2 added nine success criteria over 2.1; this skill checks three directly:
 **What contrast ratio does WCAG require?**
 WCAG 2.2 SC 1.4.3 requires 4.5:1 for normal text and 3:1 for large text (18pt regular or 14pt bold+) at Level AA. SC 1.4.11 requires 3:1 for non-text elements like icons, borders, and UI-state indicators.
 
+**Is a tap target smaller than 24x24 px always a WCAG failure?**
+No, and treating it as one is the commonest way an audit manufactures a finding. WCAG 2.2 SC 2.5.8 sets the 24x24 CSS px minimum with five exceptions, and two of them are visible in a screenshot. Spacing: center a 24 px diameter circle on each undersized target, and it is exempt when that circle intersects no other target and no other undersized target's circle - so a small icon button with clear space around it passes, while the same button in a tight toolbar row does not. Inline: a target sitting in a sentence, sized by the line-height of the text around it, is exempt, which covers most links in body copy. The other three - an equivalent control elsewhere on the page, a control the user agent sizes, a presentation that is essential - are not readable from an image, so a finding names them as the ways it can be closed rather than pretending to have ruled them out.
+
 **How do I check accessibility from a screenshot?**
-Measure what pixels can prove: contrast, non-text contrast, target size against the 24x24 CSS px minimum, and whether labels and headings are visually present. Everything else needs HTML or a live URL, and gets listed as not verifiable rather than guessed.
+Measure what pixels can prove: contrast, non-text contrast, target size against the 24x24 CSS px minimum and the spacing around anything under it, and whether labels and headings are visually present. Everything else needs HTML or a live URL, and gets listed as not verifiable rather than guessed.
 
 **Can I ask for just the critical accessibility issues?**
 Yes - ask for a quick check or just the blockers, and only P0 gets written up. The full 18-criterion pass still runs underneath it, and any criterion that produced a P1 or P2 finding is named on one line under "Suppressed at this depth" with the tier it landed in. A shorter report never turns a finding into a silent pass; ask for the detail on any of those lines and it gets written up.
