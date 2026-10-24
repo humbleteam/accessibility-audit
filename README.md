@@ -77,7 +77,7 @@ reach it.
 # Accessibility audit: Acme Checkout - payment step (screenshot)
 
 **Input type:** screenshot
-**Scope:** contrast, non-text contrast, target size, visible labels, heading and label text. Non-text contrast and target size were checked and came back clean. Alt text, DOM order, ARIA, and keyboard behavior not checked - no HTML provided.
+**Scope:** contrast, non-text contrast, target size, visible labels, heading and label text, read at 390 CSS px (a 1170 px wide screenshot at a supplied 3x ratio). Non-text contrast and target size were checked and came back clean - the screen's one undersized target, the help control beside the CVC field, is exempt under 2.5.8's spacing condition, measured below. Alt text, DOM order, ARIA, and keyboard behavior not checked - no HTML provided.
 
 ## P0 - blocks use
 1. **"Pay now" button fails contrast**
@@ -112,6 +112,23 @@ reach it.
 ## Scope note
 Expert-review pass against WCAG 2.2, not a substitute for assistive-technology testing, and not a legal ADA or Section 508 compliance certification.
 ```
+
+The scope line's 2.5.8 verdict is the one reading in that report whose working is not
+visible in the output, so here it is in full. The file is 1170 px wide and the device pixel
+ratio was supplied as 3, which puts the screen at 390 CSS px. Without that number the
+criterion goes to the ledger rather than the scope line, because target size is defined in
+CSS pixels and an image stores device ones, so the same control would have measured 60 px
+and passed by arithmetic alone. The help control beside the CVC field is 60 x 60 px in the
+file, so 20 x 20 CSS px, which is under the 24 x 24 minimum - and under the minimum is where
+the check starts. Center a 24 CSS px diameter circle on the control's bounding box: the
+radius is 12 and the box reaches 10, so the circle's edge sits 2 CSS px outside the box on
+every side. The nearest other target is the CVC input, 9 CSS px clear of that box, so the
+circle reaches nothing and the spacing condition exempts the control. Put the same 20 x 20
+control in a row of identical icons 4 px apart and each circle reaches the next one's, the
+exemption is gone, and the identical measurement files a P1 - which is why the size alone is
+never the finding. So 2.5.8 sits on the scope line as checked and clean, never in the ledger,
+and the scope line names the exempt control, because a verdict a reader cannot re-measure is
+a verdict they have to take on trust.
 
 ### JSX input, styles not supplied
 
