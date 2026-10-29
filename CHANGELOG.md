@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.12.0] - 2026-10-29
+
+- The scope line was the one of the four homes with no SC numbers in it. A finding carries its `WCAG 2.2 SC x.x.x` citation, and the Output format template gives the ledger and the suppressed roster `<SC number and name>` each, while the scope line read `<one line on what was actually checked>` - so the home that holds the checked-and-clean criteria was the only one a reader could not count, which makes it the only one a criterion can disappear from without leaving a visible gap. The 18-criteria accounting rule has been this repo's spine since 1.0.0 and it was never checkable end to end.
+- Prose is also ambiguous in the one way that matters here. "Contrast, target size and visible labels were checked" names what was examined, and examining a criterion is how a finding starts, so that list cannot tell a reader which of the three came back clean and which are written up below. The screenshot report in the README was exactly this shape: a five-item prose list of what was read, two of whose items - visible labels and heading and label text - are the P1 and the P2 underneath it.
+- The rule now reads: conditions and coverage in prose, then `Checked and clean: <number> <short name>`, comma-separated. Stated in Output format, in Step 3 where the four homes are defined, and in the README's accounting bullet, so all three agree.
+- The screenshot example's scope line carries it - `Checked and clean: 1.4.11 non-text contrast, 2.5.8 target size` - and both multi-screen templates do too, since the scope line is per screen. The JSX example already named its clean six by number and is unchanged; the divergence between the two examples is what surfaced the gap.
+- A criterion whose working is not reproducible from the report still names the control or pair it turned on. That was already true of the 2.5.8 exemption and is now stated as the rule behind it: the scope line is where such a verdict is final, with no finding underneath it to carry the evidence.
+- No criterion moved and no count moved. The screenshot report still reconciles at 2 clean, 3 findings and a 13-criterion ledger, and the JSX report at 6, 4 and 8.
+
 ## [1.11.0] - 2026-10-24
 
 - The circle test added in 1.10.0 had no worked instance. SC 2.5.8's spacing exception is a measurement - center a 24 CSS px diameter circle on an undersized target's bounding box and look for an intersection - and the README's screenshot report asserted its result without showing any of it: the scope line said target size "was checked and came back clean" and nothing in the repo rendered the check that produced that verdict.

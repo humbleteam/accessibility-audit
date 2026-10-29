@@ -49,7 +49,7 @@ See `references/wcag22-checklist.md` for what to look for under each one.
 
 This is the rule that keeps the audit honest. Never claim a pass or a fail on a criterion the input cannot demonstrate.
 
-**Every criterion leaves the audit somewhere.** All 18 in the table above must end up in exactly one of the four homes defined under Output format: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion whose finding the requested depth withholds; or a line under "Not verifiable from this input". A criterion in none of the four has been dropped, and a dropped criterion reads as a silent pass, which is the one thing this step exists to prevent. The homes are not interchangeable: a criterion that was checked and passed belongs on the scope line and never in the ledger, which says the input could not reach it. The three groups below are exhaustive and add up to 18; anything you cannot place in the first two belongs in the third. The count runs per audited screen, not per report: a criterion can fail on one screen and come back clean on the next, so a report covering two screens carries two complete sets of the four homes. One report-wide verdict would have to drop one of the two readings, and the dropped one reads as a pass.
+**Every criterion leaves the audit somewhere.** All 18 in the table above must end up in exactly one of the four homes defined under Output format: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion whose finding the requested depth withholds; or a line under "Not verifiable from this input". A criterion in none of the four has been dropped, and a dropped criterion reads as a silent pass, which is the one thing this step exists to prevent. The homes are not interchangeable: a criterion that was checked and passed belongs on the scope line and never in the ledger, which says the input could not reach it. All four name their criteria by SC number, the scope line included - see Output format - because a home whose entries are only described in prose cannot be counted. The three groups below are exhaustive and add up to 18; anything you cannot place in the first two belongs in the third. The count runs per audited screen, not per report: a criterion can fail on one screen and come back clean on the next, so a report covering two screens carries two complete sets of the four homes. One report-wide verdict would have to drop one of the two readings, and the dropped one reads as a pass.
 
 From a **screenshot alone**, you CAN check (5 criteria):
 
@@ -108,7 +108,7 @@ Use exactly this structure for a report covering one screen:
 # Accessibility audit: <name or URL of what was reviewed>
 
 **Input type:** screenshot | URL | HTML/JSX
-**Scope:** <one line on what was actually checked>
+**Scope:** <what was read, and under what conditions>. Checked and clean: <SC number and short name, for each criterion that was checked and produced no finding>. <what was not checked, and why>
 
 ## P0 - blocks use
 1. **<short title>**
@@ -142,7 +142,7 @@ When the input shows more than one screen, each screen takes its own `##` headin
 
 ## <Screen 1 name>
 
-**Scope:** <what was checked on this screen>
+**Scope:** <what was read on this screen>. Checked and clean: <SC number and short name, per criterion>. <what was not checked here, and why>
 
 ### P0 - blocks use
 ### P1 - degrades use
@@ -152,7 +152,7 @@ When the input shows more than one screen, each screen takes its own `##` headin
 
 ## <Screen 2 name>
 
-**Scope:** <what was checked on this screen>
+**Scope:** <what was read on this screen>. Checked and clean: <SC number and short name, per criterion>. <what was not checked here, and why>
 
 ### P0 - blocks use
 (the same sections, filled in for this screen, under the same omission rules)
@@ -166,6 +166,8 @@ The scope line moves under each screen heading, because it is one of the four ho
 Omit a severity section entirely when it has zero findings - do not pad it with "no issues found" filler under a heading that implies problems exist. Always include "Not verifiable from this input" when the input is a screenshot, and on every source-only audit too, markup or fetched URL, with its styles or without them: the three rendered-condition criteria from Step 3 never leave a source-only ledger, so "None - full markup was available" is not a sentence a source-only audit can write. Markup that arrives without its styles keeps the longer ledger, per Step 3 - "None" there would claim a coverage the input never gave, and it is the more convincing false pass because the rest of the report shows criteria being read straight off real code. Markup with a screenshot of the same screen keeps a ledger too: the image resolves what it renders and no more, so "None" there claims the states it never showed. One input empties the ledger: code plus a rendered view of each of the three conditions, the screen at 200% text size, at 320px wide, and in a focus state. The line then reads "None - the code and the rendered views together reached all 18", and the scope line names those views, because that is what makes the claim checkable. Include "Suppressed at this depth" only when the request limited the output depth, and never as a stand-in for a severity section that genuinely had no findings - an omitted section says there was nothing to report, which is the opposite of what suppression means. Always include the scope note.
 
 "Not verifiable from this input" is the ledger that makes Step 3 checkable. Every one of the 18 criteria is accounted for exactly once, across four places: a finding under P0, P1, or P2; the scope line, for a criterion that was checked and came back clean; "Suppressed at this depth", for a criterion that produced a finding the requested depth withholds; or this ledger, for a criterion the input could not reach. A criterion in none of the four has been dropped silently. On a screenshot audit the ledger normally holds 13 criteria - the 7 partial ones whose matching state was not supplied, plus the 6 a static image can never reach - so a short ledger is the symptom of criteria going missing, not of a clean screen. That 13 is per screen: a two-screen report holds two ledgers of about that length, not one shared between them. A markup audit has its own expected lengths: three when the styles came with the markup - 1.4.4, 1.4.10, and 2.4.11, which need the page rendered rather than a value computed - and at least the seven style-dependent criteria from Step 3 when they did not, plus any criterion the snippet's scope cannot reach, such as 3.3.8 on a component that holds no sign-in step. A fetched URL takes whichever of those two lengths matches what the fetch actually returned, unless the fetch returned a shell rather than the page, which is its own case under Edge cases and files nearly all 18. Group entries on one line where they share a reason (`1.4.4 / 1.4.10 Resize text and reflow - need a 200% text-size screenshot and a 320px-wide one`) rather than dropping them to keep the report tidy.
+
+**The scope line names its checked-and-clean criteria by SC number**, the way the other three homes name theirs. A finding carries its citation, a ledger entry and a suppressed line each open with an SC number, and the scope line is the one home whose entries a reader would otherwise have to infer from prose - which makes it the only place the count to 18 cannot be checked, and so the only place a criterion can go missing without leaving a gap anyone can see. Prose is also ambiguous about the thing that matters most here: "contrast, target size and visible labels were checked" names what was examined, and examining a criterion is how a finding starts, so a reader cannot tell from that list which of the three came back clean and which are written up below. Write the conditions and the coverage in prose, then the clean criteria as `<number> <short name>`, comma-separated: `Checked and clean: 1.4.11 non-text contrast, 2.5.8 target size.` A criterion whose own working is not reproducible from the report - a 2.5.8 exemption, a ratio read off an image - names the control or pair it turned on, because the scope line is where that verdict is final and there is no finding underneath it to carry the evidence.
 
 ## Edge cases
 
