@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0] - 2026-11-07
+
+- Two rules that are each right about their own case left one reachable case unstated, and the case is reachable precisely because the accounting is per screen. The quick-check case bans a withheld finding from the scope line, which is reserved for criteria that came back clean. Step 3 runs the count per audited screen, so a two-screen report carries two complete sets of the four homes. Neither says where a criterion lands when it came back clean on one screen and had its finding withheld on the other, which a depth-limited request over two screens produces.
+- Resolved the way Step 3 already resolves the same shape: the ban is per screen, like the accounting. The criterion is named twice, once per screen and once per home - on the clean screen's scope line, and under the other screen's "Suppressed at this depth" - which is one home per screen rather than one criterion in two homes.
+- Read report-wide instead, all three ways out are already illegal, and that is why the silence mattered. Keeping it off the clean screen's scope line drops it from that screen's set, and a criterion that leaves a screen silently reads as a pass on the one screen where it was genuinely checked. Rostering the clean reading as suppressed asserts a withheld finding on a screen that produced none. Choosing one verdict for both screens drops one of the two readings, which Step 3 forbids already where a criterion fails on one screen and is clean on the next.
+- Added as an edge case in SKILL.md, next to the quick-check case whose ban it qualifies, and as the matching sentence in the README's quick-check answer so the rule and the FAQ agree. The report-level scope line still states the depth limit once, because the limit came with the request rather than with a screen.
+- No criterion moved, no count moved and no example changed: both README reports are single-screen and undepth-limited, so neither is an instance of this case. The screenshot report still reconciles at 2 clean, 3 findings and a 13-criterion ledger, the JSX report at 6, 4 and 8.
+
 ## [1.12.0] - 2026-10-29
 
 - The scope line was the one of the four homes with no SC numbers in it. A finding carries its `WCAG 2.2 SC x.x.x` citation, and the Output format template gives the ledger and the suppressed roster `<SC number and name>` each, while the scope line read `<one line on what was actually checked>` - so the home that holds the checked-and-clean criteria was the only one a reader could not count, which makes it the only one a criterion can disappear from without leaving a visible gap. The 18-criteria accounting rule has been this repo's spine since 1.0.0 and it was never checkable end to end.
