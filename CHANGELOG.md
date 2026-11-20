@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.14.0] - 2026-11-20
+
+- Every input path had a countable ledger length except the shell case, which said only that `nearly every criterion` lands in the ledger. The shell case now states its length: all 18. The one path with no number was the one most able to hide a false pass.
+- What a shell still carries, a `<title>` and a `lang` attribute, answers SC 2.4.2 and SC 3.1.1. Neither is among the 18, so neither moves a criterion out of the ledger; filing them as checked and clean would break the count to 18. Matching sentence added to the README's fetched-URL answer.
+
 ## [1.13.0] - 2026-11-07
 
 - Two rules that are each right about their own case left one reachable case unstated, and the case is reachable precisely because the accounting is per screen. The quick-check case bans a withheld finding from the scope line, which is reserved for criteria that came back clean. Step 3 runs the count per audited screen, so a two-screen report carries two complete sets of the four homes. Neither says where a criterion lands when it came back clean on one screen and had its finding withheld on the other, which a depth-limited request over two screens produces.
