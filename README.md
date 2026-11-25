@@ -227,6 +227,8 @@ Only as far as the fetch reaches. A client-rendered app answers a fetch with a n
 
 **Does this replace a legal ADA or Section 508 audit?**
 No. It's an expert-review pass grounded in WCAG 2.2, not a legal compliance certification. Legal compliance audits typically require testing with assistive-technology users and a documented methodology beyond one review pass.
+**How do I check contrast for text over a photo or gradient?**
+Not with one ratio. Text over an image, gradient or video sits on many background colors at once, so a single measurement only describes the pixel it was taken from. The skill files this as a P1 for indeterminate contrast instead of estimating a pass, and the fix line says how to close it: test the text color against the worst-case region behind it, the lightest area under light text or the darkest under dark text. A solid scrim or overlay behind the text turns it back into one background with one measurable ratio.
 
 ## Related skills
 

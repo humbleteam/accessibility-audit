@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.15.0] - 2026-11-25
+
+- New FAQ answer on checking contrast for text over a photo, gradient or video: no single ratio, filed as a P1 for indeterminate contrast, closed by testing the worst-case region or adding a solid scrim. Matches the existing SKILL.md edge case.
+
 ## [1.14.0] - 2026-11-20
 
 - Every input path had a countable ledger length except the shell case, which said only that `nearly every criterion` lands in the ledger. The shell case now states its length: all 18. The one path with no number was the one most able to hide a false pass.
